@@ -12,7 +12,7 @@ numnodes=24
 #    RUN_COMMAND="numactl -m 1 check-hybrid.intel.cori"
 
 #numprocspernode=64
-for numprocspernode in 32 16 8; do
+for numprocspernode in 64 32 16 8; do
 
 numprocs=$(( ${numnodes}*${numprocspernode} ))
 echo "numprocspernode=" $numprocspernode

@@ -9,7 +9,7 @@
 numnodes=12
 
 #numprocspernode=16
-for numprocspernode in 16 8; do
+for numprocspernode in 64 32 16 8; do
 
 numprocs=$(( ${numnodes}*${numprocspernode} ))
 echo "numprocspernode=" $numprocspernode
