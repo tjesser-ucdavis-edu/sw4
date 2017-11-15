@@ -1,4 +1,4 @@
 src/**/*.C linguist-language=C++
 src/**/*.h linguist-language=C++
-tools/**/*.C linguist-language=C++
+tools/**/*.C linguist-language=Java
 tools/**/*.h linguist-language=C++
