@@ -1,1 +1,4 @@
-
+src/**/*.C linguist-language=C++
+src/**/*.h linguist-language=C++
+tools/**/*.C linguist-language=C++
+tools/**/*.h linguist-language=C++
