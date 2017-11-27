@@ -89,33 +89,65 @@ def guess_mpi_cmd(mpi_tasks, verbose):
     dependent default value.
     """
 
+    machine_defaults = {
+        "node": {
+            "quartz": {
+                "tasknum": 36,
+                "command": "srun -ppdebug -n {tasknum}",
+            },
+            "cab": {
+                "tasknum": 16,
+                "command": "srun -ppdebug -n {tasknum}",
+            },
+            "nid": {
+                "tasknum": 64,
+                "command": "srun -c 4 --cpu_bind=cores -n {tasknum}",
+            },
+            "fourier": {
+                "tasknum": 4,
+                "command": "mpirun -np {tasknum}",
+            },
+        },
+        "system": {
+            "linux": {
+                "tasknum": 1,
+                "command": "mpirun -np {tasknum}",
+            },
+        },
+        "default": {
+            "tasknum": 1,
+            "command": "mpirun -np {tasknum}",
+        },
+    }
+
     uname = platform.uname()
 
-    node_name = uname.node
-    sys_name = uname.system
+    node_settings = {
+        node_name : settings
+        for node_name, settings
+        in machine_defaults["node"].items()
+        if node_name.casefold() in uname.node.casefold()
+    }
 
+    system_settings = {
+        sys_name : settings
+        for sys_name, settings
+        in machine_defaults["system"].items()
+        if sys_name.casefold() in uname.system.casefold()
+    }
 
-    if 'quartz' in node_name:
-        if mpi_tasks<=0: mpi_tasks = 36
-        mpirun_cmd="srun -ppdebug -n " + str(mpi_tasks)
-    elif 'cab' in node_name:
-        if mpi_tasks<=0: mpi_tasks = 16
-        mpirun_cmd="srun -ppdebug -n " + str(mpi_tasks)
-    elif 'nid' in node_name:
-        # all KNL nodes on cori have a node name starting with 'nid'
-        if mpi_tasks<=0: mpi_tasks = 64
-        mpirun_cmd="srun -c 4 --cpu_bind=cores -n " + str(mpi_tasks)
-    elif 'fourier' in node_name:
-        if mpi_tasks<=0: mpi_tasks = 4
-        mpirun_cmd="mpirun -np " + str(mpi_tasks)
-    # add more machine names here
-    elif 'Linux' in sys_name:
-        if mpi_tasks<=0: mpi_tasks = 1
-        mpirun_cmd="mpirun -np " + str(mpi_tasks)
+    if node_settings:
+        _, settings = node_settings.popitem()
+
+    elif system_settings:
+        _, settings = system_settings.popitem()
+
     else:
-        #default mpi command
-        if mpi_tasks<=0: mpi_tasks = 1
-        mpirun_cmd="mpirun -np " + str(mpi_tasks)
+        settings = machine_defaults["default"]
+
+    mpirun_cmd = settings["command"].format(
+        tasknum=(mpi_tasks if mpi_tasks > 0 else settings["tasknum"]),
+    )
 
     if verbose:
         print("platform.uname():")
