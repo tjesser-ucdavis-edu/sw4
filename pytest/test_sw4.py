@@ -137,9 +137,19 @@ def guess_mpi_cmd(mpi_tasks, verbose):
     }
 
     if node_settings:
+        if len(node_settings) > 1 and verbose:
+            print("Warning: Detected multiple node types:")
+            for node_name in node_settings:
+                print("  {}".format(node_name))
+
         _, settings = node_settings.popitem()
 
     elif system_settings:
+        if len(system_settings) > 1 and verbose:
+            print("Warning: Detected multiple system types:")
+            for sys_name in system_settings:
+                print("  {}".format(sys_name))
+
         _, settings = system_settings.popitem()
 
     else:
