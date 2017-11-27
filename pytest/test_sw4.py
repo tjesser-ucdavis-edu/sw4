@@ -5,6 +5,7 @@
 
 import argparse
 import os
+import platform
 import subprocess
 import sys
 
@@ -83,15 +84,15 @@ def compare_one_line(base_file_name, test_file_name, errTol, absErrLimit, lineNu
 #------------------------------------------------
 def guess_mpi_cmd(mpi_tasks, verbose):
     """Create an MPI command string based on machine-dependent default values.
-    The local machine information is retrieved with os.uname(). If mpi_tasks is
-    less than or equal to zero, it will be set to a machine-dependent default
-    value.
+    The local machine information is retrieved with platform.uname(). If
+    mpi_tasks is less than or equal to zero, it will be set to a machine-
+    dependent default value.
     """
 
-    if verbose: print('os.uname=', os.uname())
-    node_name = os.uname()[1]
+    if verbose: print('platform.uname=', platform.uname())
+    node_name = platform.uname().node
     if verbose: print('node_name=', node_name)
-    sys_name = os.uname()[0]
+    sys_name = platform.uname().system
     if verbose: print('sys_name=', sys_name)
 
     if 'quartz' in node_name:
