@@ -89,10 +89,12 @@ def guess_mpi_cmd(mpi_tasks, verbose):
     dependent default value.
     """
 
-    if verbose: print('platform.uname=', platform.uname())
-    node_name = platform.uname().node
+    uname = platform.uname()
+
+    if verbose: print('platform.uname=', uname)
+    node_name = uname.node
     if verbose: print('node_name=', node_name)
-    sys_name = platform.uname().system
+    sys_name = uname.system
     if verbose: print('sys_name=', sys_name)
 
     if 'quartz' in node_name:
