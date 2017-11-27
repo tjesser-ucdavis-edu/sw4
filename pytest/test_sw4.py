@@ -91,11 +91,9 @@ def guess_mpi_cmd(mpi_tasks, verbose):
 
     uname = platform.uname()
 
-    if verbose: print('platform.uname=', uname)
     node_name = uname.node
-    if verbose: print('node_name=', node_name)
     sys_name = uname.system
-    if verbose: print('sys_name=', sys_name)
+
 
     if 'quartz' in node_name:
         if mpi_tasks<=0: mpi_tasks = 36
@@ -119,7 +117,12 @@ def guess_mpi_cmd(mpi_tasks, verbose):
         if mpi_tasks<=0: mpi_tasks = 1
         mpirun_cmd="mpirun -np " + str(mpi_tasks)
 
-    if verbose: print('mpirun_cmd = ', mpirun_cmd)
+    if verbose:
+        print("platform.uname():")
+        for k, v in uname._asdict().items():
+            print("  {}: {}".format(k, v))
+
+        print('mpirun_cmd = {}'.format(mpirun_cmd))
 
     return mpirun_cmd
 
