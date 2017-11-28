@@ -276,7 +276,7 @@ def create_parser():
 
     parser.add_argument(
         "-m",
-        "--mpitasks",
+        "--mpi-tasks",
         type=int,
         default=0,
         help="number of mpi tasks. if less than or equal to 0, value will be set to a machine dependent value (default: 0)",
@@ -284,7 +284,7 @@ def create_parser():
 
     parser.add_argument(
         "-d",
-        "--sw4_exe_dir",
+        "--sw4-exe-dir",
         default="optimize",
         help="name of directory that contains sw4 executable (default: 'optimize')",
     )
@@ -301,7 +301,7 @@ if __name__ == "__main__":
     if not main_test(
         args.sw4_exe_dir,
         args.level,
-        args.mpitasks,
+        args.mpi_tasks,
             args.verbose):
 
         print("test_sw4 was unsuccessful")
